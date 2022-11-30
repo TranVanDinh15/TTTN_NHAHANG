@@ -59,8 +59,8 @@
 
     button {
         background-color: var(--Black);
-        color: #ccc;
-        font-size: 14px;
+        color: #fff;
+        font-size: 20px;
     }
 }
 
@@ -74,7 +74,7 @@
     display: flex;
 
     button {
-        padding: 10px;
+        padding: 6px;
         margin-left: 20px;
         cursor: pointer;
         font-size: 16px;
@@ -170,4 +170,34 @@
         float: left;
         padding: 20px;
     }
+}
+
+.isclient {
+    position: fixed;
+    width: 500px;
+    min-height: 200px;
+    left: 25%;
+    top: 25%;
+    background-color: var(--white);
+
+
+}
+
+.wrapperDetailTable__xmark {
+    display: flex;
+    justify-content: flex-start;
+    padding: 20px;
+
+    svg {
+        font-size: 30px;
+        font-size: 700;
+        cursor: pointer;
+        border: 2px solid var(--home);
+        padding: 2px 8px;
+        transition: 0.6s;
+    }
+}
+
+.wrapperDetailTable__xmark:hover svg {
+    transform: rotate(90deg);
 }

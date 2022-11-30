@@ -151,7 +151,7 @@
 
             tr {
                 &:first-child {
-                    background-color: var(--btn);
+                    background-color: var(--btn) !important;
                     height: 40px;
                 }
 
@@ -246,6 +246,7 @@
 
 .OrderFood__Item__Container__title {
     height: 40px;
+    margin: 0;
 }
 
 .OrderFood__Item__iconAmount {

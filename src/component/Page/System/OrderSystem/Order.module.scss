@@ -6,7 +6,7 @@
 
 .listTime {
     display: flex;
-    padding: 40px;
+    padding: 0 0 0 10px;
 
     .createUser {
         width: 100px;
@@ -28,15 +28,18 @@
 }
 
 .titleSystem {
-    margin-top: 40px;
+    padding: 20px 0 0 0;
 
-    h5 {
-        font-size: 26px;
+    span {
+        margin: 20px 0;
+        font-size: 24px;
+        font-weight: 500;
+        color: #161748;
     }
 }
 
 .TableSytem {
-    margin: 0 40px;
+    margin: 0 20px;
 }
 
 .roidId {
@@ -55,10 +58,18 @@
 
     select {
         width: 280px;
-        border: 1px solid #ccc;
+        border: none;
         outline: #009eda;
         padding: 10px;
         border-radius: 4px;
+        background-color: var(--btn);
+        color: var(--white);
+        font-weight: 600;
+
+        option {
+            background-color: #fff;
+            color: var(--Black);
+        }
     }
 }
 
@@ -77,4 +88,17 @@
     span {
         margin-left: 4px;
     }
+}
+
+.date {
+    margin-top: 16px;
+    margin-left: 20px;
+
+    input {
+        padding: 8px 10px;
+    }
+}
+
+.dateContainer {
+    display: flex;
 }

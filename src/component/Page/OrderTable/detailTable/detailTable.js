@@ -27,6 +27,10 @@ function DetailTable({ setIsDetail, detailOrder, setDisplayPrint }) {
                             <div className={cx("wrapperDetailTable__Heading")}>
                                 <span>{detailOrder ? detailOrder.data.table : ''}</span>
                             </div>
+                            <div className={cx("wrapperDetailTable__Item__NameClient")}>
+                                <span>Khách Hàng: {detailOrder.data.description
+                                }</span>
+                            </div>
                             <div className={cx("wrapperDetailTable__Item")}>
                                 <table class="w3-table">
                                     <tr>
@@ -50,7 +54,7 @@ function DetailTable({ setIsDetail, detailOrder, setDisplayPrint }) {
                                                         <td>{data.quantity}</td>
                                                         <td>{detailOrder.data.createAt
                                                         }</td>
-                                                        <td>{(data.price * data.quantity).toLocaleString("vi-VN", {
+                                                        <td>{(data.total).toLocaleString("vi-VN", {
                                                             style: "currency",
                                                             currency: "VND",
                                                         })}</td>

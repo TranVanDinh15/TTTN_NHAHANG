@@ -7,6 +7,7 @@
     margin: 20px 0;
     font-size: 24px;
     font-weight: 500;
+    color: #161748;
 }
 
 .FormCreateTable {
@@ -199,5 +200,5 @@
 }
 
 .action {
-    display: flex;
+    background-color: var(--home) !important;
 }

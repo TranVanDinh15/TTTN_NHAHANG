@@ -26,7 +26,7 @@ table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
-
+    min-height: 60px !important;
 }
 
 td,
@@ -36,15 +36,23 @@ th {
     padding: 10px !important;
 }
 
+tr:first-child {
+    background-color: #393f4d !important;
+
+}
+
+tr th {
+    color: #fff !important;
+}
+
+
+
 tr:nth-child(even) {
-    background-color: #dddddd !important;
-    border: 1px solid #dddddd !important;
+    background-color: #eaeaea !important;
 
 }
 
-tr {
-    border: 1px solid #dddddd !important;
-}
+tr {}
 
 
 

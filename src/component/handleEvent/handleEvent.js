@@ -1,7 +1,8 @@
 import {
-    createFood, createMaterial, createOrder,
-
-    createTable, createUserBrands, createWaveHouse, deleteBrand, deleteFood, deleteUser, detailOrder, getAllBranch, getAllFood, getAllUserBrands, getListMaterial, getListTable, getListUser, getListWaveHouse, getReportInDay, getTableAll, payload, responseAllUser, statusBranch, tableStatus, updateBranchPost, updateBrand, updateFood, updateMaterial, updateTable, updateUserPost
+    changerStatusBranch,
+    changeStatus,
+    changeStatusFood,
+    createFood, createMaterial, createOrder, createTable, createUserBrands, createWaveHouse, deleteBrand, deleteFood, deleteUser, detailOrder, getAllBranch, getAllFood, getAllUserBrands, getListMaterial, getListTable, getListUser, getListWaveHouse, getReportInDay, getTableAll, payload, responseAllUser, statusBranch, tableStatus, trendingFood, updateBranchPost, updateFood, updateMaterial, updateOrder, updateTable, updateUserPost
 
 } from "../axios/meThodPost"
 import { toast } from "react-toastify";
@@ -216,8 +217,9 @@ export const handleUpdateTable = async (tableId, body, setIsUpdate) => {
 
 }
 // handle get Report In Day
-export const handleGetReportInDay = async (employeeId, setState) => {
-    const response = await getReportInDay(employeeId)
+export const handleGetReportInDay = async (employeeId, setState, date, status) => {
+    const response = await getReportInDay(employeeId, date, status)
+    console.log(response)
     if (response.status == 200) {
         setState(response)
     }
@@ -282,4 +284,133 @@ export const handlePayload = async (employeeId, tableId) => {
         }
     }
     console.log(response)
+}
+// handle Trending Food
+export const handleTrendingFood = async (employeeId, setChart) => {
+    try {
+        const respone = await trendingFood(employeeId)
+        console.log(respone)
+        if (respone) {
+            if (respone.data) {
+                const series = respone.data.map((data, index) => {
+                    return data.quantity
+                })
+                const labels = respone.data.map((data, index) => {
+                    return data.food
+                })
+                setChart(
+                    {
+                        series: [...series],
+                        options: {
+                            chart: {
+                                width: 380,
+                                type: 'pie',
+                            },
+                            labels: [...labels],
+                            responsive: [{
+                                breakpoint: 480,
+                                options: {
+                                    chart: {
+                                        width: 200
+                                    },
+                                    legend: {
+                                        position: 'bottom'
+                                    }
+                                }
+                            }]
+                        },
+
+
+                    }
+                )
+                // setState(respone)
+            }
+
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+// Handle Update Order
+export const handleUpdateOrder = async (employeeId, data, setRequestUpdateFood, requestUpdateFood, cart) => {
+    try {
+        const responseOrderDetail = await detailOrder(data.tableId, employeeId)
+        if (responseOrderDetail) {
+            const food = responseOrderDetail.data.food.map((data, index) => {
+                return {
+                    food: data.food,
+                    quantity: data.quantity
+                }
+            })
+            console.log(food)
+            console.log(cart)
+            const cartFood = cart.map((data, index) => {
+                return {
+                    food: data.name,
+                    quantity: data.quantity
+                }
+            })
+            setRequestUpdateFood({
+                ...requestUpdateFood,
+                table: data.tableId,
+                food: [...food, ...cartFood],
+            })
+        }
+        console.log(responseOrderDetail)
+    } catch (error) {
+        console.log(error)
+    }
+}
+// Handle confirm Update Order
+export const handleConfirmOrder = async (body, setState) => {
+    const response = await updateOrder(body)
+    console.log(response)
+    if (response) {
+        if (response.data == 'Cập nhật thông tin thành công') {
+            toast.success('Cập nhật thông tin thành công', {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            setState(false)
+        } else {
+            toast.error(response.data, {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        }
+    }
+}
+// Handle get Turnover
+export const handleGetTurnover = async (employeeId, date, status, setState) => {
+    try {
+        const response = await getReportInDay(employeeId, date, status)
+        if (response.status == 200) {
+            setState(response.data)
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+// Handle changer status table
+export const handleChangeStatus = async (tableId, employeeId, setState) => {
+    const response = await changeStatus(tableId)
+    console.log(response)
+    if (response) {
+        handleGetAllTable(employeeId, setState)
+    }
+}
+// Handle changer status food
+export const handleChangerStatusFood = async (foodId, branchId, setState) => {
+    const response = await changeStatusFood(foodId)
+    console.log(response)
+    if (response) {
+        handleGetListFood(branchId, setState)
+    }
+}
+// Handle changer status branch
+export const handleChangerStatusBranch = async (branchId, setState) => {
+    const response = await changerStatusBranch(branchId)
+    if (response) {
+        getAllBranch(setState)
+    }
 }

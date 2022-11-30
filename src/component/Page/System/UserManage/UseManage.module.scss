@@ -33,12 +33,13 @@
 }
 
 .titleSystem {
-    margin-top: 40px;
+    margin-top: 20px;
 
-    h5 {
-        // color: var(--table);
-        font-weight: 600;
-        font-size: 20px;
+    span {
+        margin: 20px 0;
+        font-size: 24px;
+        font-weight: 500;
+        color: #161748;
     }
 }
 
@@ -228,3 +229,10 @@ tr:nth-child(even) {
     padding: 10px 6px;
     color: var(--white);
 }
+
+// .titleSystem {
+//     margin: 20px 0;
+//     font-size: 24px;
+//     font-weight: 500;
+//     color: #161748;
+// }

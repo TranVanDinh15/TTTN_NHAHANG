@@ -13,7 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import IsLogin from "../../isLogin/isLogin";
 import Tippy from "@tippyjs/react/headless";
-import { handleCreateOrder, handleGetAllTable, handleGetListFood, handleGetListTableStatus } from "../../handleEvent/handleEvent";
+import { handleConfirmOrder, handleCreateOrder, handleGetAllTable, handleGetListFood, handleGetListTableStatus, handleUpdateOrder } from "../../handleEvent/handleEvent";
 import { getAllFood } from "../../axios/meThodPost";
 const cx = classNames.bind(styles)
 const category = [
@@ -58,7 +58,6 @@ function OrderFood() {
         ],
         description: ''
     })
-    console.log(allFood)
     // Lấy dữ liệu giỏ hàng từ localStorage
     const dispatch = useDispatch()
     const totalCoin = cart != [] ? cart.reduce((accumalator, currentValue) => {
@@ -66,7 +65,17 @@ function OrderFood() {
     }, 0) : ''
 
     const [isCreateTable, setIsCreateTable] = useState(false)
+    const [isConfirmCombine, setIsConfirmCombine] = useState(false)
     const [isAddFood, setIsAddFood] = useState(false)
+    const [requestUpdateFood, setRequestUpdateFood] = useState(
+        {
+            employeeId: currentUser ? currentUser.employeeId : '',
+            table: '',
+            food: [],
+            description: 'không'
+        }
+    )
+    console.log(requestUpdateFood)
     useEffect(() => {
         if (currentUser) {
             getAllFood(currentUser.employeeId, setAllFood)
@@ -207,7 +216,8 @@ function OrderFood() {
                                         <tbody>
                                             <tr
                                                 style={{
-                                                    textAlign: "center"
+                                                    textAlign: "center",
+                                                    backgroundColor: "var(--yellow) !important"
                                                 }}
                                             >
                                                 <th>Tên Món</th>
@@ -217,7 +227,6 @@ function OrderFood() {
 
                                             {
                                                 cart ? (cart).map((data, index) => {
-
                                                     return (
                                                         <tr key={index}
                                                             style={{
@@ -453,7 +462,7 @@ function OrderFood() {
                     <div className={cx("wrapperTableHollow__Item")}>
                         <div className={cx("wrapperTableHollow__Item__Icon")}
                             onClick={(event) => {
-                                setIsCreateTable(false)
+                                setIsAddFood(false)
                             }}
                         >
                             <FontAwesomeIcon icon={faXmark} />
@@ -470,16 +479,19 @@ function OrderFood() {
                                                 render={attrs => (
                                                     <div className={cx("box")} tabIndex="-1" {...attrs}>
                                                         <div className={cx("btn_orderTable")}
-                                                            onClick={() => {
+                                                            onClick={(event) => {
+                                                                event.preventDefault()
+                                                                setIsConfirmCombine(true)
                                                                 setRequestOrder({
                                                                     ...requestOrder,
-                                                                    table: data.tableId
+                                                                    table: `${data.tableId}`
                                                                 })
-                                                                setIsAuthentication(true)
-                                                                setIsCreateTable(false)
+                                                                handleUpdateOrder(currentUser.employeeId, data, setRequestUpdateFood, requestUpdateFood, cart)
                                                             }}
                                                         >
-                                                            <button>
+                                                            <button
+
+                                                            >
                                                                 Ghép
                                                             </button>
                                                         </div>
@@ -502,6 +514,36 @@ function OrderFood() {
                         </div>
                     </div>
 
+                </div>
+                : ''
+        }
+        {
+            isConfirmCombine ?
+                <div className={cx("authentication")}>
+                    <div className={cx("authentication__Item")}>
+                        <span>Xác nhận ghép đơn</span>
+                        <div className={cx("authentication__Item__btn")}>
+                            <div
+                                onClick={(event) => {
+                                    handleConfirmOrder(requestOrder, setIsConfirmCombine)
+                                }}
+                            >
+                                <button
+                                    className={cx("authentication__Item__btn__Profile")}
+                                >Xác nhận</button>
+                            </div>
+                            <div
+                                onClick={(event) => {
+                                    setIsConfirmCombine(false)
+                                }}
+                            >
+                                <button
+                                    className={cx("authentication__Item__btn__home")}
+
+                                >Hủy</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 : ''
         }

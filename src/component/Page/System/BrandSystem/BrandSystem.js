@@ -10,7 +10,7 @@ import HeaderSystem from "../HeaderSystem/HeaderSystem";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import styles from './BrandSystem.module.scss'
-import { handleDeleteBrand, handleStatusBrand, handleUpdateBrand } from "../../../handleEvent/handleEvent";
+import { handleChangerStatusBranch, handleDeleteBrand, handleStatusBrand, handleUpdateBrand } from "../../../handleEvent/handleEvent";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 const cx = classNames.bind(styles)
@@ -63,7 +63,9 @@ function BrandSystem() {
             <div className={cx('wrapperBrandSystem__Container')}>
                 <HeaderSystem />
                 <div className={cx('wrapperBrandSystem__Heading')}>
-                    <span>Quản Lý Chi Nhánh</span>
+                    <span
+
+                    >Quản Lý Chi Nhánh</span>
                 </div>
                 <div className={cx('restaurantDetail')}>
                     <span></span>
@@ -91,38 +93,24 @@ function BrandSystem() {
                                                 <td>{data.address}</td>
                                                 <td>{data.phone}</td>
                                                 <td>{data.street}</td>
-                                                <td><button
-                                                    style={{
-                                                        border: "2px solid #ccc",
-                                                    }}
-                                                    className={cx("btn__Detail")}
-                                                    onClick={(event) => {
-                                                        if (cache) {
-                                                            setCache('')
-                                                            console.log('ok')
-                                                        } else {
-                                                            setCache(index)
-                                                            handleStatusBrand(data.branchId, setStatusBranch)
-                                                        }
-                                                    }}
-                                                >
-                                                    Chi Tiết
-                                                    <FontAwesomeIcon icon={faAngleDown} />
-
-                                                </button>
-                                                    <div className={cx("Detail__Action", cache == `${index}` ? 'action' : '')} >
-                                                        <div className={cx("Detail__Action__Text")}>
-                                                            <span>{statusBranch ? statusBranch : ''}</span>
-                                                        </div>
-                                                        <div className={cx("Detail__Action__btn")}
-                                                            onClick={() => {
-
-                                                            }}
-                                                        >
-
-                                                            <button>Bật</button>
-                                                        </div>
-                                                    </div>
+                                                <td>{data.status == 1 ? "Đang hoạt động" : "Đóng cửa"}
+                                                    <button
+                                                        className={cx(data.status == 1 ? "action" : '')}
+                                                        style={{
+                                                            padding: "2px 10px",
+                                                            marginLeft: "10px",
+                                                            cursor: "pointer",
+                                                            float: "right",
+                                                            backgroundColor: "#7D3CFF ",
+                                                            color: "var(--white)",
+                                                            border: "none"
+                                                        }}
+                                                        onClick={(event) => {
+                                                            event.preventDefault()
+                                                            // handleChangerStatusFood(resource.foodId, userRedux.branchId, setAllFood)
+                                                            handleChangerStatusBranch(data.branchId, setGetBranch)
+                                                        }}
+                                                    >{data.status == 1 ? 'tắt' : 'bật'}</button>
                                                 </td>
                                                 <td><div className={cx("tableUser__Icon")} key={index}>
                                                     <FontAwesomeIcon icon={faPenToSquare} onClick={() => {

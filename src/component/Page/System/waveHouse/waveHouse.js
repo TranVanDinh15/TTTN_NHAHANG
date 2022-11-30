@@ -142,21 +142,23 @@ function WaveHouseSystem() {
                 <FontAwesomeIcon icon={faCalendar} />
                 <span>Theo Thời Gian</span>
             </div>
-        </div>
-        <div className={cx("TableSytem")}>
-            {
-                allwaveHouse ?
-                    <div className={cx("createUser")}
-                        onClick={() => {
 
-                        }
-                        }
-                    >
-                        <FontAwesomeIcon icon={faFileExcel} />
-                        <span>Xuất Excel</span>
-                    </div>
-                    : ''
-            }
+        </div>
+        {
+            allwaveHouse ?
+                <div className={cx("createUser")}
+                    onClick={() => {
+
+                    }
+                    }
+                >
+                    <FontAwesomeIcon icon={faFileExcel} />
+                    <span>Excel</span>
+                </div>
+                : ''
+        }
+        <div className={cx("TableSytem")}>
+
             <table style={{ width: "100%" }}>
                 <tbody>
 
@@ -174,7 +176,6 @@ function WaveHouseSystem() {
                             allwaveHouse.data.map((resource, index) => {
                                 return (
                                     <tr key={index}>
-
                                         <td>{resource.date
                                         }</td>
                                         <td >{resource.materialCode}</td>

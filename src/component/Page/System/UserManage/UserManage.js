@@ -97,7 +97,7 @@ function UserManage() {
         <HeaderSystem />
         <div className={cx("UserSystem")}>
             <div className={cx("titleSystem")}>
-                <h5>QUẢN LÝ NGƯỜI DÙNG</h5>
+                <span>Quản Lý Người Dùng</span>
             </div>
             <div className={cx("createUser")}
                 onClick={() => {

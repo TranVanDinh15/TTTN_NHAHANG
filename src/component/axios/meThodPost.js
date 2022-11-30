@@ -133,6 +133,14 @@ export const updateUserPost = (id, body) => {
         console.log(error)
     }
 }
+// Changer status Branch
+export const changerStatusBranch = (branchId) => {
+    try {
+        return axios.put(`https://restaurant-manager-1.herokuapp.com/branch/change-status?id=${branchId}`)
+    } catch (error) {
+        console.log(error)
+    }
+}
 // Delete User
 export const deleteUser = (employeeId) => {
     try {
@@ -212,7 +220,14 @@ export const deleteFood = (foodId) => {
         console.log(error)
     }
 }
-
+// changer status food
+export const changeStatusFood = (foodId) => {
+    try {
+        return axios.put(`https://restaurant-manager-1.herokuapp.com/food/change-status?id=${foodId}`)
+    } catch (error) {
+        console.log(error)
+    }
+}
 // get list table
 export const getListTable = (employeeId, setState) => {
     try {
@@ -242,10 +257,17 @@ export const updateTable = (tableId, body) => {
     }
 }
 // get Table Space
-
 export const tableStatus = (employeeId, status) => {
     try {
         return axios.get(`https://restaurant-manager-1.herokuapp.com/table/list-by-status?employeeId=${employeeId}&status=${status}`)
+    } catch (error) {
+        console.log(error)
+    }
+}
+// update status table
+export const changeStatus = (tableId) => {
+    try {
+        return axios.put(`https://restaurant-manager-1.herokuapp.com/table/change-status?id=${tableId}`)
     } catch (error) {
         console.log(error)
     }
@@ -281,9 +303,9 @@ export const createOrder = (body) => {
     }
 }
 // get report in day
-export const getReportInDay = (employeeId) => {
+export const getReportInDay = (employeeId, date, status) => {
     try {
-        return axios.get(`https://restaurant-manager-1.herokuapp.com/report/in-day?employeeId=${employeeId}`)
+        return axios.get(`https://restaurant-manager-1.herokuapp.com/report/in-day?employeeId=${employeeId}&day=${date}&status=1`)
     } catch (error) {
         console.log(error)
     }
@@ -292,6 +314,22 @@ export const getReportInDay = (employeeId) => {
 export const payload = (employeeId, tableId) => {
     try {
         return axios.get(`https://restaurant-manager-1.herokuapp.com/order/pay?employeeId=${employeeId}&tableId=${tableId}`)
+    } catch (error) {
+        console.log(error)
+    }
+}
+// get quantity buy  food
+export const trendingFood = (employeeId) => {
+    try {
+        return axios.get(`https://restaurant-manager-1.herokuapp.com/order/report?employeeId=${employeeId}`)
+    } catch (error) {
+        console.log(error)
+    }
+}
+// get update order
+export const updateOrder = (body) => {
+    try {
+        return axios.put(`https://restaurant-manager-1.herokuapp.com/order/update`, body)
     } catch (error) {
         console.log(error)
     }

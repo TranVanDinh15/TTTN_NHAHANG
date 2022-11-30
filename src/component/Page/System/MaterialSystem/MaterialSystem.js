@@ -106,7 +106,8 @@ function MaterialSystem() {
                         <th scope="col">Name</th>
                         <th scope="col">Giá</th>
                         <th scope="col">Loại</th>
-                        <th scope="col">Còn Lại</th>
+                        <th scope="col">Số Lượng</th>
+                        <th scope="col">Giới hạn</th>
                         <th scope="col">Nơi Sản Xuất</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -120,6 +121,7 @@ function MaterialSystem() {
                                     <td>{data.cost}</td>
                                     <td>{data.type}</td>
                                     <td>{data.quantity}</td>
+                                    <td>{data.stockEnd}</td>
                                     <td>{data.whereProduction}</td>
                                     <td><div className={cx("tableUser__Icon")}
                                         onClick={(event) => {

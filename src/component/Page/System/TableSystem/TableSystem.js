@@ -10,7 +10,7 @@ import { useNavigate } from "react-router";
 import { toast, ToastContainer } from "react-toastify";
 import { getBrands } from "../../../axios/callApi";
 import { getAllBranch, getFoodAll } from "../../../axios/meThodPost";
-import { handleCreateTable, handleFindAdmin, handleGetAllTable, handleUpdateTable } from "../../../handleEvent/handleEvent";
+import { handleChangeStatus, handleCreateTable, handleFindAdmin, handleGetAllTable, handleUpdateTable } from "../../../handleEvent/handleEvent";
 import HeaderSystem from "../HeaderSystem/HeaderSystem";
 import styles from './Tablesystem.module.scss'
 const cx = classNames.bind(styles)
@@ -39,66 +39,69 @@ function TableSystem() {
     const navigate = useNavigate()
     console.log(allTable)
     useEffect(() => {
-        getFoodAll(setAllFood)
+        // getFoodAll(setAllFood)
         getAllBranch(setGetBarnd)
     }, [])
-    console.log(requestCreate)
+    console.log(getBrand)
     return <div className={cx("wrapperTableSystem")}>
         <HeaderSystem />
         <div className={cx("TableSystemHeading")}>
             <span>Quản Lý Bàn</span>
         </div>
-        <div className={cx("createUser")}
-            onClick={() => {
-                setIsCreateUser(true)
-            }
-            }
-        >
-            <FontAwesomeIcon icon={faPlus} />
-            <span>Thêm Bàn</span>
-        </div>
-        <Tippy
-            render={attrs => (
-                <div className="box" tabIndex="-1" {...attrs}>
-                    {
-                        getBrand ?
-                            getBrand.data.map((data, index) => {
-                                if (userLogin) {
-                                    if (data.branchId == userLogin.branchId) {
-                                        return (
-                                            <div className={cx("box__Item")} key={index}
-                                                onClick={() => {
-                                                    setCurrentBranch(data)
-                                                    if (userLogin) {
-                                                        handleGetAllTable(userLogin.employeeId, setAllTable)
-                                                    }
-                                                }}
-                                            >
-                                                <span>{data.name}</span>
-                                            </div>
-                                        )
-                                    }
-                                }
-                            })
-                            : ''
-                    }
-                </div>
-            )}
-            placement={'bottom'}
-            interactive={true}
-        >
-            <div className={cx("createUser")
-
-            }
+        <div className={cx("container__btn")}>
+            <div className={cx("createUser")}
                 onClick={() => {
+                    setIsCreateUser(true)
+                }
+                }
+            >
+                <FontAwesomeIcon icon={faPlus} />
+                <span>Thêm Bàn</span>
+            </div>
+            <Tippy
+                render={attrs => (
+                    <div className="box" tabIndex="-1" {...attrs}>
+                        {
+                            getBrand ?
+                                getBrand.data.map((data, index) => {
+                                    if (userLogin) {
+                                        if (data.branchId == userLogin.branchId) {
+                                            return (
+                                                <div className={cx("box__Item")} key={index}
+                                                    onClick={() => {
+                                                        setCurrentBranch(data)
+                                                        if (userLogin) {
+                                                            handleGetAllTable(userLogin.employeeId, setAllTable)
+                                                        }
+                                                    }}
+                                                >
+                                                    <span>{data.name}</span>
+                                                </div>
+                                            )
+                                        }
+                                    }
+                                })
+                                : ''
+                        }
+                    </div>
+                )}
+                placement={'bottom'}
+                interactive={true}
+            >
+                <div className={cx("createUser")
 
                 }
-                }
-                style={{ backgroundColor: 'var(--table)' }}
-            >
-                <span>{currentBranch ? currentBranch.name : 'Chi Nhánh'}</span>
-            </div>
-        </Tippy>
+                    onClick={() => {
+
+                    }
+                    }
+                    style={{ backgroundColor: 'var(--table)' }}
+                >
+                    <span>{currentBranch ? currentBranch.name : 'Chi Nhánh'}</span>
+                </div>
+            </Tippy>
+
+        </div>
         <div className={cx("TableSytem")}>
             <table style={{ width: "100%" }}>
                 <tbody>
@@ -108,6 +111,7 @@ function TableSystem() {
                         <th>Ghi Chú</th>
                         <th>Chỗ Ngồi</th>
                         <th>Chi Tiết</th>
+                        <th>Trạng Thái</th>
                         <th>Action</th>
                     </tr>
                     {
@@ -120,7 +124,25 @@ function TableSystem() {
                                         }</td>
                                         <td >{resource.description}</td>
                                         <td>{resource.totalSlot}</td>
-                                        <td>no</td>
+                                        <td>{resource.description}</td>
+                                        <td>{resource.status == 1 ? 'Đã có khách' : 'Không có khách'}
+                                            <button
+                                                className={cx(resource.status == 1 ? "action" : '')}
+                                                style={{
+                                                    padding: "2px 10px",
+                                                    marginLeft: "10px",
+                                                    cursor: "pointer",
+                                                    float: "right",
+                                                    backgroundColor: "#7D3CFF",
+                                                    color: "var(--white)",
+                                                    border: "none"
+                                                }}
+                                                onClick={(event) => {
+                                                    event.preventDefault()
+                                                    handleChangeStatus(resource.tableId, userLogin.employeeId, setAllTable)
+                                                }}
+                                            >{resource.status == 1 ? 'tắt' : 'bật'}</button>
+                                        </td>
                                         <td>
                                             <div className={cx("tableUser__Icon")} key={index}>
                                                 <FontAwesomeIcon icon={faPenToSquare} onClick={() => {

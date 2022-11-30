@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast, ToastContainer } from "react-toastify";
 import { getAllBranch, getAllFood, getFoodAll, getListMaterial } from "../../../axios/meThodPost";
-import { handleCreateFood, handleGetEmployee, handleGetListFood, handleUpdateFood, hanleDeleteFood } from "../../../handleEvent/handleEvent";
+import { handleChangerStatusFood, handleCreateFood, handleGetEmployee, handleGetListFood, handleUpdateFood, hanleDeleteFood } from "../../../handleEvent/handleEvent";
 import HeaderSystem from "../HeaderSystem/HeaderSystem";
 import styles from './FoodSystem.module.scss'
 const cx = classNames.bind(styles)
@@ -130,13 +130,13 @@ function FoodSystem() {
             <table style={{
                 width: "100%"
             }}>
-                < tbody >
-
+                <tbody>
                     <tr>
                         <th scope="col">Tên Món</th>
                         <th scope="col">Phân Loại</th>
                         <th scope="col">Giá Bán</th>
                         <th scope="col">Nguyên Liệu</th>
+                        <th scope="col">Trạng Thái</th>
                         <th scope="col">action</th>
                     </tr>
                     {
@@ -157,6 +157,24 @@ function FoodSystem() {
                                                 )
                                             })
                                         }</td>
+                                        <td>{resource.status == 1 ? "Vẫn còn" : "Đã hết"}
+                                            <button
+                                                className={cx(resource.status == 1 ? "action" : '')}
+                                                style={{
+                                                    padding: "2px 10px",
+                                                    marginLeft: "10px",
+                                                    cursor: "pointer",
+                                                    float: "right",
+                                                    backgroundColor: "#7D3CFF ",
+                                                    color: "var(--white)",
+                                                    border: "none"
+                                                }}
+                                                onClick={(event) => {
+                                                    event.preventDefault()
+                                                    handleChangerStatusFood(resource.foodId, userRedux.branchId, setAllFood)
+                                                }}
+                                            >{resource.status == 1 ? 'tắt' : 'bật'}</button>
+                                        </td>
                                         <td><div className={cx("tableUser__Icon")} key={index}>
                                             <FontAwesomeIcon icon={faPenToSquare} onClick={() => {
                                                 setIsUpdate(true)
@@ -185,10 +203,7 @@ function FoodSystem() {
                             })
                             : ''
                     }
-
-
                 </tbody>
-
             </table>
         </div >
         {

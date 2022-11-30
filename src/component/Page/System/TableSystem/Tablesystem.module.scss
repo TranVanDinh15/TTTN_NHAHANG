@@ -4,11 +4,13 @@
 }
 
 .TableSystemHeading {
-    margin: 40px 0;
+    margin: 20px 0;
 
     span {
+        margin: 20px 0;
         font-size: 24px;
-        padding: 20px 0;
+        font-weight: 500;
+        color: #161748;
     }
 }
 
@@ -154,4 +156,8 @@ table {
         padding: 10px;
         border-radius: 4px;
     }
+}
+
+.action {
+    background-color: var(--home) !important;
 }

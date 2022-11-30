@@ -6,36 +6,22 @@ import { useEffect, useState } from "react";
 import HeaderSystem from "../HeaderSystem/HeaderSystem";
 import styles from './Order.module.scss'
 import * as XLSX from 'xlsx';
-import { getAllBranch } from "../../../axios/meThodPost";
+import { getAllBranch, getReportInDay } from "../../../axios/meThodPost";
 import Tippy from "@tippyjs/react/headless";
 import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
-import { handleGetReportInDay } from "../../../handleEvent/handleEvent";
+import { handleGetReportInDay, handleGetTurnover } from "../../../handleEvent/handleEvent";
 const cx = classNames.bind(styles)
-const array = [
-    {
-        name: 'D',
-        age: '18'
-    },
-    {
-        name: 'A',
-        age: '19'
-    },
-    {
-        name: 'C',
-        age: '20'
-    }
-]
-
-
 function Order() {
     const [currentBranch, setCurrentBranch] = useState('')
     const [allBranch, setAllBranch] = useState('')
     const [allReport, setAllreport] = useState('')
     const [isLogin, setIsLogin] = useState(false)
+    const [date, setDate] = useState('')
+    const [repostInday, setReportInday] = useState('')
     const userLogin = useSelector(state => state.rootLoginReducer.user)
     const handleExportExcel = () => {
-        const foods = allReport.data.data.map((data, index) => {
+        const foods = allReport.data.map((data, index) => {
             return {
                 Number: index,
                 Date: data.createAt,
@@ -52,9 +38,9 @@ function Order() {
                 TotalPrice: data.totalAmount
             }
         })
-        const wb = XLSX.utils.book_new(),
+        const wb = XLSX.utils.book_new(foods),
             ws = XLSX.utils.json_to_sheet(foods)
-        XLSX.utils.book_append_sheet(wb, ws, 'Mysheet1')
+        XLSX.utils.book_append_sheet(wb, ws, 'Mysheet2')
         XLSX.writeFile(wb, "myexcel.xlsx")
     }
     console.log(allReport)
@@ -65,7 +51,7 @@ function Order() {
         <HeaderSystem />
         <div className={cx("UserSystem")}>
             <div className={cx("titleSystem")}>
-                <h5>Báo Cáo Bán Hàng</h5>
+                <span>Báo Cáo Bán Hàng</span>
             </div>
             <div className={cx("listTime")}>
                 <Tippy
@@ -74,26 +60,28 @@ function Order() {
                             {
                                 allBranch ?
                                     allBranch.data.map((data, index) => {
-                                        return (
-                                            <div className={cx("box__Item")} key={index}
-                                                onClick={() => {
-                                                    setCurrentBranch(data)
-                                                    if (userLogin) {
-                                                        if (data.branchId == userLogin.branchId) {
-                                                            setIsLogin(true)
-                                                            handleGetReportInDay(userLogin.employeeId, setAllreport)
+                                        if (data.branchId == userLogin.branchId) {
+                                            return (
+                                                <div className={cx("box__Item")} key={index}
+                                                    onClick={() => {
+                                                        setCurrentBranch(data)
+                                                        if (userLogin) {
+                                                            if (data.branchId == userLogin.branchId) {
+                                                                setIsLogin(true)
+                                                                handleGetReportInDay(userLogin.employeeId, setAllreport)
+                                                            }
+                                                        } else {
+                                                            setIsLogin(false)
+                                                            toast.error('Vui lòng đăng nhâpk !!', {
+                                                                position: toast.POSITION.TOP_RIGHT
+                                                            });
                                                         }
-                                                    } else {
-                                                        setIsLogin(false)
-                                                        toast.error('Vui lòng đăng nhâpk !!', {
-                                                            position: toast.POSITION.TOP_RIGHT
-                                                        });
-                                                    }
-                                                }}
-                                            >
-                                                <span>{data.name}</span>
-                                            </div>
-                                        )
+                                                    }}
+                                                >
+                                                    <span>{data.name}</span>
+                                                </div>
+                                            )
+                                        }
                                     })
                                     : ''
                             }
@@ -116,24 +104,40 @@ function Order() {
                 </Tippy>
                 {
                     isLogin ?
-                        <div className={cx("roidId")}>
-                            <select id="BRAND" name="CHI NHÁNH"
-                                onChange={(event) => {
-                                    if (event.target.value == 1) {
-                                        handleGetReportInDay(userLogin.employeeId, setAllreport)
-                                    }
-                                }}
+                        <div className={cx("dateContainer")}>
+                            <div className={cx("roidId")}>
+                                <select id="BRAND" name="CHI NHÁNH"
+                                    onChange={(event) => {
+                                        if (event.target.value == 1) {
+                                            handleGetReportInDay(userLogin.employeeId, setAllreport)
+                                        }
+                                    }}
+                                >
+                                    <option >Chọn Thời Gian</option>
+                                    <option value={1}>Theo Ngày</option>
+                                    <option value={2}>Theo Tháng</option>
+                                    <option value={3}>Theo Năm</option>
+                                </select>
+                            </div>
+                            <div className={cx("date")}>
+                                <input type={"date"} value={date} onChange={(event) => {
+                                    setDate(event.target.value)
+                                }} />
+                            </div>
+                            <div className={cx("createUser")
+
+                            }
+                                onClick={async () => {
+                                    handleGetTurnover(userLogin.employeeId, date, 1, setAllreport)
+                                }
+                                }
+                                style={{ backgroundColor: 'var(--profile)' }}
                             >
-                                <option >Chon Thời Gian</option>
-                                <option value={1}>Theo Ngày</option>
-                                <option value={2}>Theo Tháng</option>
-                                <option value={3}>Theo Năm</option>
-                            </select>
+                                <span>{'Xem'}</span>
+                            </div>
                         </div>
                         : ''
                 }
-            </div>
-            <div className={cx("TableSytem")}>
                 <div className={cx("createUser")}
                     onClick={() => {
                         handleExportExcel()
@@ -141,8 +145,11 @@ function Order() {
                     }
                 >
                     <FontAwesomeIcon icon={faFileExcel} />
-                    <span>Xuất Excel</span>
+                    <span>Excel</span>
                 </div>
+            </div>
+            <div className={cx("TableSytem")}>
+
                 <table style={{ width: "100%" }}>
                     <tbody>
 
@@ -157,59 +164,24 @@ function Order() {
                         </tr>
                         {
                             allReport ?
-                                allReport.data.data.map((data, index) => {
+                                allReport.data.map((data, index) => {
                                     return (
                                         <tr key={index}>
-
-                                            <td
-                                            // style={{
-                                            //     width: "100px",
-                                            //     display: "flex",
-                                            //     flexWrap: "wrap"
-                                            // }}
-                                            >{index}</td>
-                                            <td >{data.createAt}</td>
+                                            <td>{index}</td>
+                                            <td>{data.createAt}</td>
                                             <td>{data.table}</td>
-                                            <td
-                                            // style={{
-                                            //     width: "140px",
-                                            //     display: "flex",
-                                            //     flexWrap: "wrap"
-                                            // }}
-                                            >{data.food.map((data, index) => {
-                                                return (
-                                                    <span key={index}>{data.food}, </span>
-                                                )
-                                            })}
-
-                                            </td>
-                                            <td
-
-                                            >{
-                                                    data.food.map((data, index) => {
-                                                        return (
-                                                            <span key={index}>{data.quantity}, </span>
-                                                        )
-                                                    })
-                                                }</td>
-                                            <td
-                                            // style={{
-                                            //     width: "200px",
-                                            //     display: "flex",
-                                            //     flexWrap: "wrap"
-                                            // }}
-                                            >{data.food.map((data, index) => {
-                                                return (
-                                                    <span key={index}>{(data.price).toLocaleString("vi-VN", {
-                                                        style: "currency",
-                                                        currency: "VND",
-                                                    })}, </span>
-                                                )
+                                            <td>{data.food.map((data, index) => {
+                                                return <span>{data.food}, </span>
                                             })}</td>
-                                            <td>{data.totalAmount.toLocaleString("vi-VN", {
-                                                style: "currency",
-                                                currency: "VND",
+                                            <td>{data.food.map((data, index) => {
+                                                return <span>{data.quantity}, </span>
                                             })}</td>
+                                            <td>{data.food.map((data, index) => {
+                                                return <span>{data.price}, </span>
+                                            })}</td>
+                                            <td>{data.totalAmount
+                                            }</td>
+
                                         </tr>
                                     )
                                 })
@@ -225,6 +197,6 @@ function Order() {
             </div>
         </div>
         <ToastContainer></ToastContainer>
-    </div>
+    </div >
 }
 export default Order

@@ -6,40 +6,30 @@ import './Home.css'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartSimple, faSackDollar, faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import { faClipboard } from "@fortawesome/free-regular-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { useSelector } from "react-redux";
 import IsLogin from "../../isLogin/isLogin";
+import { handleGetTurnover, handleTrendingFood } from "../../handleEvent/handleEvent";
 const cx = classNames.bind(styles)
 function Home() {
     const date = new Date()
+    const currentDay = (date.getFullYear()) + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+    console.log(currentDay)
     const userRedux = useSelector(state => state.rootLoginReducer.user)
-    const [chartState, setCharState] = useState(
-        {
-            series: [60, 55, 13, 43, 22, 40],
-            options: {
-                chart: {
-                    width: 380,
-                    type: 'pie',
-                },
-                labels: ['Combo 1', 'Combo 2', 'Lẩu Kim Chi', 'Bò Mỹ', 'Combo 3', 'Combo 4'],
-                responsive: [{
-                    breakpoint: 480,
-                    options: {
-                        chart: {
-                            width: 200
-                        },
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }]
-            },
-
-
+    const [turnoverOrder, setTurnoverOrder] = useState('')
+    const [chartState, setCharState] = useState('')
+    const handleFunction = () => {
+        return async () => {
         }
-
-    )
+    }
+    useEffect(() => {
+        handleTrendingFood(userRedux.employeeId, setCharState)
+        return () => {
+            // handleGetTurnover(userRedux.employeeId, currentDay, 1, setTurnoverOrder)
+        }
+    }, [])
+    console.log(turnoverOrder)
     return <>
         {
             userRedux ?
@@ -97,13 +87,17 @@ function Home() {
                                         <div className={cx('turnoverOrder__title')}>
                                             <span><i><FontAwesomeIcon icon={faChartSimple} /></i>Số lượng Order</span>
                                         </div>
-                                        <ReactApexChart
-                                            options={chartState.options}
-                                            series={chartState.series}
-                                            type="pie"
-                                            width="400"
-                                            height="200"
-                                        />
+                                        {
+                                            chartState ?
+                                                <ReactApexChart
+                                                    options={chartState.options}
+                                                    series={chartState.series}
+                                                    type="pie"
+                                                    width="400"
+                                                    height="200"
+                                                />
+                                                : ''
+                                        }
                                     </div>
 
                                     <div className={cx('turnoverOrder__Item__col')}>
