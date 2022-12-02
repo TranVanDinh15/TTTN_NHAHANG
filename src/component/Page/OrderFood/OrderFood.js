@@ -47,14 +47,7 @@ function OrderFood() {
         employeeId: currentUser ? currentUser.employeeId : '',
         table: '',
         food: [
-            // {
-            //     food: 20,
-            //     quantity: 1
-            // },
-            // {
-            //     food: 21,
-            //     quantity: 1
-            // }
+
         ],
         description: ''
     })
@@ -63,7 +56,6 @@ function OrderFood() {
     const totalCoin = cart != [] ? cart.reduce((accumalator, currentValue) => {
         return accumalator + currentValue.totalPrice
     }, 0) : ''
-
     const [isCreateTable, setIsCreateTable] = useState(false)
     const [isConfirmCombine, setIsConfirmCombine] = useState(false)
     const [isAddFood, setIsAddFood] = useState(false)
@@ -75,7 +67,10 @@ function OrderFood() {
             description: 'không'
         }
     )
-    console.log(requestUpdateFood)
+    const [detailOrder, setDetailOrder] = useState('')
+    console.log(detailOrder)
+    console.log(cart)
+    console.log(allFood)
     useEffect(() => {
         if (currentUser) {
             getAllFood(currentUser.employeeId, setAllFood)
@@ -133,15 +128,12 @@ function OrderFood() {
                                                                         }}
                                                                         key={index}
                                                                     >
-                                                                        {/* <div className={cx("ContainerFood__Food__Item__Image")}>
-                                                                        <img src={data.image} />
-                                                                    </div> */}
+                                                                        <div className={cx("ContainerFood__Food__Item__Image")}>
+                                                                            <img src={data.image} />
+                                                                        </div>
                                                                         <div className={cx("ContainerFood__Food__Item__Infor")}>
                                                                             <span>{data.name}</span>
-                                                                            <span><span className={cx('cost')}>{data.price.toLocaleString("vi-VN", {
-                                                                                style: "currency",
-                                                                                currency: "VND",
-                                                                            })}</span> - <span className={cx('price')}>{data.price.toLocaleString("vi-VN", {
+                                                                            <span> <span className={cx('price')}>{data.price.toLocaleString("vi-VN", {
                                                                                 style: "currency",
                                                                                 currency: "VND",
                                                                             })}</span></span>
@@ -217,7 +209,7 @@ function OrderFood() {
                                             <tr
                                                 style={{
                                                     textAlign: "center",
-                                                    backgroundColor: "var(--yellow) !important"
+
                                                 }}
                                             >
                                                 <th>Tên Món</th>
@@ -300,6 +292,17 @@ function OrderFood() {
                                         onClick={async () => {
                                             if (isAddFood == false) {
                                                 setIsAddFood(true)
+                                                const orderUpdate = cart.map((data) => {
+                                                    return {
+                                                        food: data.foodId,
+                                                        quantity: data.quantity
+                                                    }
+                                                })
+                                                console.log(orderUpdate)
+                                                setRequestUpdateFood({
+                                                    ...requestUpdateFood,
+                                                    food: orderUpdate
+                                                })
                                             } else {
                                                 setIsAddFood(false)
                                             }
@@ -480,17 +483,15 @@ function OrderFood() {
                                                     <div className={cx("box")} tabIndex="-1" {...attrs}>
                                                         <div className={cx("btn_orderTable")}
                                                             onClick={(event) => {
-                                                                event.preventDefault()
                                                                 setIsConfirmCombine(true)
-                                                                setRequestOrder({
-                                                                    ...requestOrder,
+                                                                setRequestUpdateFood({
+                                                                    ...requestUpdateFood,
                                                                     table: `${data.tableId}`
                                                                 })
-                                                                handleUpdateOrder(currentUser.employeeId, data, setRequestUpdateFood, requestUpdateFood, cart)
+                                                                handleUpdateOrder(currentUser.employeeId, data, cart, setDetailOrder)
                                                             }}
                                                         >
                                                             <button
-
                                                             >
                                                                 Ghép
                                                             </button>
@@ -517,6 +518,61 @@ function OrderFood() {
                 </div>
                 : ''
         }
+        {/* {
+            isAddFood ?
+                <div className={cx("wrapperTableHollow")}>
+                    <div className={cx("wrapperTableHollow__Item")}>
+                        <div className={cx("wrapperTableHollow__Item__Icon")}
+                            onClick={(event) => {
+                                setIsAddFood(false)
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faXmark} />
+                        </div>
+                        <div className={cx("wrapperTableHollow__Item__Heading")}>
+                            <span>Chọn Bàn Cần Ghép Đơn</span>
+                        </div>
+                        <div className={cx("ListTable")}>
+                            {
+                                allTable ?
+                                    allTable.data.map((data, index) => {
+                                        return (
+                                            <Tippy
+                                                render={attrs => (
+                                                    <div className={cx("box")} tabIndex="-1" {...attrs}>
+                                                        <div className={cx("btn_orderTable")}
+                                                            onClick={(event) => {
+                                                                setIsAuthentication(true)
+                                                            }}
+                                                        >
+                                                            <button
+                                                            >
+                                                                Ghép
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                interactive={true}
+                                                placement={"bottom"}
+                                                key={index}
+                                            >
+                                                <div className={cx("ListTable__Item")}>
+                                                    <span>{data.name}</span>
+                                                </div>
+                                            </Tippy>
+                                        )
+                                    })
+                                    : ''
+                            }
+
+
+                        </div>
+                    </div>
+
+                </div>
+                : ''
+
+        } */}
         {
             isConfirmCombine ?
                 <div className={cx("authentication")}>
@@ -525,7 +581,7 @@ function OrderFood() {
                         <div className={cx("authentication__Item__btn")}>
                             <div
                                 onClick={(event) => {
-                                    handleConfirmOrder(requestOrder, setIsConfirmCombine)
+                                    handleConfirmOrder(requestUpdateFood, setIsConfirmCombine)
                                 }}
                             >
                                 <button
@@ -547,6 +603,7 @@ function OrderFood() {
                 </div>
                 : ''
         }
+
     </>
 }
 export default OrderFood

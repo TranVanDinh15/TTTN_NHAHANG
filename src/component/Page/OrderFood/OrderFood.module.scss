@@ -73,18 +73,25 @@
 }
 
 .ContainerFood__Food__Item {
-    width: 150px;
-    // height: 100px;
-    margin-bottom: 20px;
+    min-width: 150px;
+    height: 110px;
+    margin-bottom: 10px;
     cursor: pointer;
     background-color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 6px 4px;
+    border-radius: 6px;
 
     .ContainerFood__Food__Item__Image {
         height: 100px;
+        margin-top: 4px;
 
         img {
-            width: 120px;
-            height: 100px;
+            width: 100px;
+            height: 60px;
             object-fit: cover;
         }
     }
@@ -372,6 +379,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 10000;
 
     .authentication__Item {
         width: 400px;

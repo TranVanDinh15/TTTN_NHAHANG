@@ -100,7 +100,6 @@ function TableSystem() {
                     <span>{currentBranch ? currentBranch.name : 'Chi Nhánh'}</span>
                 </div>
             </Tippy>
-
         </div>
         <div className={cx("TableSytem")}>
             <table style={{ width: "100%" }}>

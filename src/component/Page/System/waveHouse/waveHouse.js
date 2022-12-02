@@ -32,7 +32,7 @@ function WaveHouseSystem() {
     useEffect(() => {
         getAllBranch(setAllBranch)
     }, [])
-    console.log(requestWaveHouse)
+    console.log(allwaveHouse)
     return <div className={cx("wrapperWaveHouseSystem")}>
         <HeaderSystem />
         <div className={cx("WaveHouseSystemHeading")}>

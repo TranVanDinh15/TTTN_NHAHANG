@@ -277,3 +277,24 @@ tr {
 .action {
     background-color: var(--home) !important;
 }
+
+.boxupdate__Item__Image {
+    width: 120px;
+    height: 120px;
+    border: 1px solid #000;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.boxupdate__Item__ImageBox {
+    display: flex;
+    align-items: center;
+
+    input {
+        margin-left: 10px;
+    }
+}

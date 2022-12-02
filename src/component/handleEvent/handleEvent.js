@@ -286,16 +286,17 @@ export const handlePayload = async (employeeId, tableId) => {
     console.log(response)
 }
 // handle Trending Food
-export const handleTrendingFood = async (employeeId, setChart) => {
+export const handleTrendingFood = async (employeeId, setChart, setTurnoverOrder) => {
     try {
         const respone = await trendingFood(employeeId)
         console.log(respone)
         if (respone) {
             if (respone.data) {
-                const series = respone.data.map((data, index) => {
+                setTurnoverOrder(respone.data)
+                const series = respone.data.data.foodTrending.map((data, index) => {
                     return data.quantity
                 })
-                const labels = respone.data.map((data, index) => {
+                const labels = respone.data.data.foodTrending.map((data, index) => {
                     return data.food
                 })
                 setChart(
@@ -327,37 +328,19 @@ export const handleTrendingFood = async (employeeId, setChart) => {
             }
 
         }
-
     } catch (error) {
         console.log(error)
     }
 }
 // Handle Update Order
-export const handleUpdateOrder = async (employeeId, data, setRequestUpdateFood, requestUpdateFood, cart) => {
+export const handleUpdateOrder = async (employeeId, data, cart, setState) => {
     try {
-        const responseOrderDetail = await detailOrder(data.tableId, employeeId)
-        if (responseOrderDetail) {
-            const food = responseOrderDetail.data.food.map((data, index) => {
-                return {
-                    food: data.food,
-                    quantity: data.quantity
-                }
-            })
-            console.log(food)
-            console.log(cart)
-            const cartFood = cart.map((data, index) => {
-                return {
-                    food: data.name,
-                    quantity: data.quantity
-                }
-            })
-            setRequestUpdateFood({
-                ...requestUpdateFood,
-                table: data.tableId,
-                food: [...food, ...cartFood],
-            })
+        console.log(cart)
+        const detailOrderCurrent = await detailOrder(data.tableId, employeeId)
+        if (detailOrderCurrent) {
+            setState(detailOrderCurrent)
         }
-        console.log(responseOrderDetail)
+        console.log(detailOrderCurrent)
     } catch (error) {
         console.log(error)
     }

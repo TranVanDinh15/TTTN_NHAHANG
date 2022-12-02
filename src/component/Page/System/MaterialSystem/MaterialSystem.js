@@ -167,11 +167,13 @@ function MaterialSystem() {
                     <div className={cx("Containerupdate")}>
                         <div className={cx("Containerupdate__Blur")}
                             onClick={() => {
+                                setIsMaterial(false)
                             }}
                         >
                         </div>
                         <div className={cx("Containerupdate__Xmark")}
                             onClick={() => {
+
                             }}
                         >
                             <FontAwesomeIcon icon={faXmark} />
@@ -278,7 +280,7 @@ function MaterialSystem() {
                             </Form>
                             <Form className={cx("boxupdate__Item")}>
                                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                                    <Form.Label>Số Lượng</Form.Label>
+                                    <Form.Label>Giới hạn hết hàng</Form.Label>
                                     <Form.Control className="mb-3__Input" type="LastName"
                                         onChange={(event) => {
                                             setRequetMaterial({

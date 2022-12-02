@@ -31,6 +31,9 @@ function DetailTable({ setIsDetail, detailOrder, setDisplayPrint }) {
                                 <span>Khách Hàng: {detailOrder.data.description
                                 }</span>
                             </div>
+                            <div className={cx("wrapperDetailTable__Item__NameClient")}>
+                                <span>Tình trạng: Bếp chưa xác nhận</span>
+                            </div>
                             <div className={cx("wrapperDetailTable__Item")}>
                                 <table class="w3-table">
                                     <tr>
@@ -39,6 +42,7 @@ function DetailTable({ setIsDetail, detailOrder, setDisplayPrint }) {
                                         <th>Sô Lượng</th>
                                         <th>Thời gian order</th>
                                         <th>Tổng Tiền </th>
+                                        <th>Tình Trạng</th>
                                     </tr>
                                     {
                                         detailOrder ?

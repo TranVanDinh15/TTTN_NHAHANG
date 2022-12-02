@@ -22,6 +22,9 @@ import WaveHouseSystem from './component/Page/System/waveHouse/waveHouse';
 function App() {
   const userRedux = useSelector(state => state.rootLoginReducer.user)
   const isPending = useSelector(state => state.rootLoginReducer.isPending)
+
+
+  // getBase64(image, setImage)
   return (
     <div className="App">
 
@@ -51,6 +54,7 @@ function App() {
           <Route path='/System/WareHouse-manage' element={<WaveHouseSystem />} />
         </Routes>
       }
+
     </div>
 
   );

@@ -26,6 +26,7 @@ function FoodSystem() {
         name: '',
         price: '',
         type: '',
+        image: '',
         material: [],
         status: 1
     }
@@ -48,10 +49,30 @@ function FoodSystem() {
     const [isDelete, setIsDelete] = useState(false)
     const userRedux = useSelector(state => state.rootLoginReducer.user)
     const navigate = useNavigate()
+    const convertBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const newFileReader = new FileReader()
+            newFileReader.readAsDataURL(file)
+            newFileReader.onload = () => {
+                resolve(newFileReader.result)
+            }
+            newFileReader.onerror = (error) => {
+                reject(error)
+            }
+        })
+    }
+    let getBase64 = async (event) => {
+        const file = event.target.files[0]
+        const base64 = await convertBase64(file)
+        setRequestCreateFood({
+            ...requestCreateFood,
+            image: base64
+        })
+    }
     useEffect(() => {
         getAllBranch(setAllBranch)
     }, [])
-    console.log(allFood)
+    console.log(requestCreateFood)
     return <div className={cx("wrapperFoodSystem")}>
         <HeaderSystem />
         <div className={cx("FoodSystemHeading")}>
@@ -243,7 +264,6 @@ function FoodSystem() {
                             </div>
                             <Form className={cx("boxupdate__Item")}>
                                 <Form.Group className="mb-3" controlId="formBasicPassword">
-
                                     <Form.Label>Chi Nhánh</Form.Label>
                                     <Form.Select aria-label="Default select example"
                                         onChange={async (event) => {
@@ -340,7 +360,7 @@ function FoodSystem() {
                                                                                             ...requestCreateFood.material,
                                                                                             {
                                                                                                 material: event.target.value,
-                                                                                                quantity: 0.5
+                                                                                                quantity: 1
                                                                                             }
                                                                                         ]
                                                                                     })
@@ -380,8 +400,27 @@ function FoodSystem() {
                                     />
 
                                 </Form.Group>
+
                             </Form>
-                            <Form className={cx("boxupdate__Item")}>
+                            <Form className={cx("boxupdate__Item__ImageBox")}>
+                                {/* <Form.Group className="mb-3" controlId="formBasicPassword">
+                                    <Form.Label>Hình Ảnh</Form.Label>
+                                    <Form.Control className="mb-3__Input" type="LastName"
+                                        onChange={(event) => {
+                                            setRequestCreateFood({
+                                                ...requestCreateFood,
+                                                image: event.target.value
+                                            })
+                                        }}
+                                    />
+
+                                </Form.Group> */}
+                                <div className={cx("boxupdate__Item__Image")}>
+                                    <img src={requestCreateFood.image ? requestCreateFood.image : ''} />
+                                </div>
+                                <input type={"file"} onChange={(event) => {
+                                    getBase64(event)
+                                }} />
                             </Form>
 
                             <Button variant="primary"

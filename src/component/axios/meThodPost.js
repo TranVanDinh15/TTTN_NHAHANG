@@ -334,3 +334,11 @@ export const updateOrder = (body) => {
         console.log(error)
     }
 }
+// get amount PayLoad Order
+export const amountPayloadOrder = (employeeId) => {
+    try {
+        return axios.get(`https://restaurant-manager-1.herokuapp.com/report/amount-order?employeeId=${employeeId}`)
+    } catch (error) {
+        console.log(error)
+    }
+}
