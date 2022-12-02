@@ -77,7 +77,7 @@ function UserManage() {
     const [isErrMessage, setIsErrMessage] = useState(false)
     const [isDelete, setIsDelete] = useState(false)
     const userRedux = useSelector(state => state.rootLoginReducer.user)
-    console.log(userRedux)
+    console.log(requestUpdate)
     const navigate = useNavigate()
     useEffect(() => {
         getAllBranch(setAllBrand)

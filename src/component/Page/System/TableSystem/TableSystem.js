@@ -223,7 +223,7 @@ function TableSystem() {
                             </div>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Tên Bàn</Form.Label>
-                                <Form.Control className="mb-3__Input" type="FirstName" placeholder="Họ và tên đệm "
+                                <Form.Control className="mb-3__Input" type="FirstName"
                                     onChange={(event) => {
                                         setRequestCreate({
                                             ...requestCreate,
@@ -239,7 +239,7 @@ function TableSystem() {
                         <Form className={cx("boxupdate__Item")}>
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                                 <Form.Label>Mô Tả</Form.Label>
-                                <Form.Control className="mb-3__Input" type="LastName" placeholder="Tên của bạn"
+                                <Form.Control className="mb-3__Input" type="LastName"
                                     onChange={(event) => {
                                         setRequestCreate({
                                             ...requestCreate,
@@ -251,7 +251,7 @@ function TableSystem() {
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                                 <Form.Label>Số Lượng</Form.Label>
-                                <Form.Control className="mb-3__Input" type="LastName" placeholder="Tên của bạn"
+                                <Form.Control className="mb-3__Input" type="LastName"
                                     onChange={(event) => {
                                         setRequestCreate({
                                             ...requestCreate,

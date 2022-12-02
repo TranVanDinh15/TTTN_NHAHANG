@@ -102,3 +102,67 @@
 .dateContainer {
     display: flex;
 }
+
+.boxDateTurnover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.boxDateTurnover__Blur {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.boxDateTurnover__Item {
+    min-width: 200px;
+    height: 200px;
+    background-color: var(--white);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.Containerupdate__Xmark {
+    position: absolute;
+    top: 70px;
+    right: 60px;
+    padding: 6px 12px;
+    background-color: #dc3023;
+    z-index: 1;
+    color: var(--white);
+    border-radius: 4px;
+    cursor: pointer;
+
+    svg {
+        font-size: 16px;
+    }
+}
+
+.createUser__Item {
+    // width: 280px;
+    padding: 0 4px;
+    height: 39px;
+    border: none;
+    outline: #009eda;
+    border-radius: 4px;
+    background-color: var(--btn);
+    color: var(--white);
+    font-weight: 600;
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 14px;
+}

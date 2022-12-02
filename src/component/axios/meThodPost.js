@@ -342,3 +342,27 @@ export const amountPayloadOrder = (employeeId) => {
         console.log(error)
     }
 }
+// get Turnover month
+export const tunoverMonth = (employeeId, date) => {
+    try {
+        return axios.get(`https://restaurant-manager-1.herokuapp.com/report/in-month?employeeId=${employeeId}&day=${date}`)
+    } catch (error) {
+        console.log(error)
+    }
+}
+// get Turnover month
+export const tunoverYear = (employeeId, date) => {
+    try {
+        return axios.get(`https://restaurant-manager-1.herokuapp.com/report/by-year?employeeId=${employeeId}&day=${date}`)
+    } catch (error) {
+        console.log(error)
+    }
+}
+// changer Status Kitchen Order
+export const ChangerStatusKitchen=(orderId ,foodId, status)=>{
+    try {
+        return axios.put(`https://restaurant-manager-1.herokuapp.com/order/change-status-food?orderId=${orderId}&foodId=${foodId}&status=${status}`)
+    } catch (error) {
+        console.log(error)
+    }
+}

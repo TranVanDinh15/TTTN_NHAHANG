@@ -1,5 +1,5 @@
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
-import { faFileExcel, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faFileExcel, faPlus, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import { getAllBranch, getReportInDay } from "../../../axios/meThodPost";
 import Tippy from "@tippyjs/react/headless";
 import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
-import { handleGetReportInDay, handleGetTurnover } from "../../../handleEvent/handleEvent";
+import { handleGetReportInDay, handleGetTunoverMonth, handleGetTunoverYear, handleGetTurnover } from "../../../handleEvent/handleEvent";
 const cx = classNames.bind(styles)
 function Order() {
     const [currentBranch, setCurrentBranch] = useState('')
@@ -19,7 +19,13 @@ function Order() {
     const [isLogin, setIsLogin] = useState(false)
     const [date, setDate] = useState('')
     const [repostInday, setReportInday] = useState('')
+    const [isTurnoverDate, setIsTurnuverDate] = useState(false)
     const userLogin = useSelector(state => state.rootLoginReducer.user)
+    const newDate = new Date()
+    const day = newDate.getFullYear() + '-' + (newDate.getMonth() + 1) + '-' + newDate.getDate()
+    const month = newDate.getFullYear() + '-' + (newDate.getMonth() + 1) + '-' + 1
+    const year = newDate.getFullYear() + '-' + 1 + '-' + 1
+    console.log(day)
     const handleExportExcel = () => {
         const foods = allReport.data.map((data, index) => {
             return {
@@ -90,7 +96,7 @@ function Order() {
                     placement={'bottom'}
                     interactive={true}
                 >
-                    <div className={cx("createUser")
+                    <div className={cx("createUser__Item")
 
                     }
                         onClick={() => {
@@ -109,44 +115,81 @@ function Order() {
                                 <select id="BRAND" name="CHI NHÁNH"
                                     onChange={(event) => {
                                         if (event.target.value == 1) {
-                                            handleGetReportInDay(userLogin.employeeId, setAllreport)
+                                            handleGetTurnover(userLogin.employeeId, day, 1, setAllreport, setIsTurnuverDate)
+                                        }
+                                        if (event.target.value == 2) {
+                                            handleGetTunoverMonth(userLogin.employeeId, month, setAllreport, setIsTurnuverDate)
+                                        }
+                                        if (event.target.value == 3) {
+                                            handleGetTunoverYear(userLogin.employeeId, year, setAllreport, setIsTurnuverDate)
                                         }
                                     }}
                                 >
-                                    <option >Chọn Thời Gian</option>
+                                    <option value={0}>Chọn Thời Gian</option>
                                     <option value={1}>Theo Ngày</option>
                                     <option value={2}>Theo Tháng</option>
                                     <option value={3}>Theo Năm</option>
                                 </select>
                             </div>
-                            <div className={cx("date")}>
-                                <input type={"date"} value={date} onChange={(event) => {
-                                    setDate(event.target.value)
-                                }} />
-                            </div>
-                            <div className={cx("createUser")
-
-                            }
-                                onClick={async () => {
-                                    handleGetTurnover(userLogin.employeeId, date, 1, setAllreport)
+                            <div className={cx("createUser")}
+                                onClick={() => {
+                                    setIsTurnuverDate(true)
                                 }
                                 }
-                                style={{ backgroundColor: 'var(--profile)' }}
                             >
-                                <span>{'Xem'}</span>
+                                <span>Chọn ngày</span>
                             </div>
+                            <div className={cx("createUser")}
+                                onClick={() => {
+                                    handleExportExcel()
+                                }
+                                }
+                            >
+                                <FontAwesomeIcon icon={faFileExcel} />
+                                <span>Excel</span>
+                            </div>
+                            {
+                                isTurnoverDate ?
+                                    <div className={cx("boxDateTurnover")}>
+                                        <div className={cx("boxDateTurnover__Blur")}
+                                            onClick={() => {
+                                                setIsTurnuverDate(false)
+                                            }}
+                                        >
+                                        </div>
+                                        <div className={cx("boxDateTurnover__Item")}>
+                                            <div className={cx("Containerupdate__Xmark")}
+                                                onClick={() => {
+                                                    setIsTurnuverDate(false)
+                                                }}
+                                            >
+                                                <FontAwesomeIcon icon={faXmark} />
+                                            </div>
+                                            <div className={cx("date")}>
+                                                <input type={"date"} value={date} onChange={(event) => {
+                                                    setDate(event.target.value)
+                                                }} />
+                                            </div>
+                                            <div className={cx("createUser")
+
+                                            }
+                                                onClick={async () => {
+                                                    handleGetTurnover(userLogin.employeeId, date, 1, setAllreport, setIsTurnuverDate)
+                                                }
+                                                }
+                                                style={{ backgroundColor: 'var(--profile)' }}
+                                            >
+                                                <span>{'Xem'}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    : ''
+                            }
                         </div>
                         : ''
                 }
-                <div className={cx("createUser")}
-                    onClick={() => {
-                        handleExportExcel()
-                    }
-                    }
-                >
-                    <FontAwesomeIcon icon={faFileExcel} />
-                    <span>Excel</span>
-                </div>
+
+
             </div>
             <div className={cx("TableSytem")}>
 

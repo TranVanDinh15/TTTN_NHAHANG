@@ -1,9 +1,9 @@
 import {
     changerStatusBranch,
+    ChangerStatusKitchen,
     changeStatus,
     changeStatusFood,
-    createFood, createMaterial, createOrder, createTable, createUserBrands, createWaveHouse, deleteBrand, deleteFood, deleteUser, detailOrder, getAllBranch, getAllFood, getAllUserBrands, getListMaterial, getListTable, getListUser, getListWaveHouse, getReportInDay, getTableAll, payload, responseAllUser, statusBranch, tableStatus, trendingFood, updateBranchPost, updateFood, updateMaterial, updateOrder, updateTable, updateUserPost
-
+    createFood, createMaterial, createOrder, createTable, createUserBrands, createWaveHouse, deleteBrand, deleteFood, deleteUser, detailOrder, getAllBranch, getAllFood, getAllUserBrands, getListMaterial, getListTable, getListUser, getListWaveHouse, getReportInDay, getTableAll, payload, responseAllUser, statusBranch, tableStatus, trendingFood, tunoverMonth, tunoverYear, updateBranchPost, updateFood, updateMaterial, updateOrder, updateTable, updateUserPost
 } from "../axios/meThodPost"
 import { toast } from "react-toastify";
 
@@ -363,12 +363,60 @@ export const handleConfirmOrder = async (body, setState) => {
     }
 }
 // Handle get Turnover
-export const handleGetTurnover = async (employeeId, date, status, setState) => {
+export const handleGetTurnover = async (employeeId, date, status, setState, setIsTurnuverDate) => {
     try {
         const response = await getReportInDay(employeeId, date, status)
-        if (response.status == 200) {
+        console.log(response.data.data)
+        // if (response.status == 200) {
+        if (response.data.data.length == 0) {
+            toast.error('Không có doanh thu', {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        } else {
             setState(response.data)
+            setIsTurnuverDate(false)
         }
+        // }
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+// Handle get Tunover Month
+export const handleGetTunoverMonth = async (employeeId, date, setState, setIsTurnuverDate) => {
+    try {
+        const response = await tunoverMonth(employeeId, date)
+        console.log(response.data.data)
+        // if (response.status == 200) {
+        if (response.data.data.length == 0) {
+            toast.error('Không có doanh thu', {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        } else {
+            setState(response.data)
+            setIsTurnuverDate(false)
+        }
+        // }
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+// Handle get Tunover Month
+export const handleGetTunoverYear = async (employeeId, date, setState, setIsTurnuverDate) => {
+    try {
+        const response = await tunoverYear(employeeId, date)
+        console.log(response.data.data)
+        // if (response.status == 200) {
+        if (response.data.data.length == 0) {
+            toast.error('Không có doanh thu', {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        } else {
+            setState(response.data)
+            setIsTurnuverDate(false)
+        }
+        // }
 
     } catch (error) {
         console.log(error)
@@ -395,5 +443,35 @@ export const handleChangerStatusBranch = async (branchId, setState) => {
     const response = await changerStatusBranch(branchId)
     if (response) {
         getAllBranch(setState)
+    }
+}
+// Handle Changer status Kitchen Order
+export const handleChangerStatusKitchen=async(orderId, foodId, statusFood)=>{
+    if(statusFood==0){
+       const response=await ChangerStatusKitchen(orderId, foodId, 1)
+       if(response.status==200){  
+           toast.success(response.data.data, {
+            position: toast.POSITION.TOP_RIGHT
+        });
+       }
+        console.log(response)
+    }
+    if(statusFood==1){
+        const response=await ChangerStatusKitchen(orderId, foodId, 2)
+        if(response.status==200){  
+            toast.success(response.data.data, {
+             position: toast.POSITION.TOP_RIGHT
+         });
+        }
+        console.log(response)
+    }
+    if(statusFood==2){
+        const response=await ChangerStatusKitchen(orderId, foodId, 0)
+        if(response.status==200){  
+            toast.success(response.data.data, {
+             position: toast.POSITION.TOP_RIGHT
+         });
+        }
+        console.log(response)
     }
 }

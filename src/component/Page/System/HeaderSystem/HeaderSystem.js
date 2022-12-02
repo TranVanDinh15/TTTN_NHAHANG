@@ -2,12 +2,15 @@ import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Tippy from "@tippyjs/react/headless";
 import classNames from "classnames/bind";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { successLogout } from "../../../../redux/actions/actionlogin";
+import { changeStatusUser } from "../../../axios/meThodPost";
 import styles from './HeaderSystem.module.scss'
 const cx = classNames.bind(styles)
 function HeaderSystem() {
     const userLogin = useSelector(state => state.rootLoginReducer.user)
+    const dispatch=useDispatch()
     const listSystem = [
         {
             name: 'Chi Nhánh',
@@ -50,6 +53,22 @@ function HeaderSystem() {
             role: process.env.REACT_APP_KEY_ACCOUNTANT,
         }
     ]
+    const handleLogOut = async () => {
+        const changeStatus = await changeStatusUser(userLogin.employeeId)
+        if (changeStatus.status == 200) {
+            if (changeStatus.data == "Bạn không hoạt động") {
+                const actionLogout = successLogout(null)
+                dispatch(actionLogout)
+                navigate('/Login')
+            } else {
+                const changeStatus = await changeStatusUser(userLogin.employeeId)
+                const actionLogout = successLogout(null)
+                dispatch(actionLogout)
+                navigate('/Login')
+            }
+        }
+        console.log(changeStatus)
+    }
     const navigate = useNavigate()
     return <div className={cx('wrapperHeaderSystem')}>
         <div className={cx("HeaderSystem")}>
@@ -95,12 +114,12 @@ function HeaderSystem() {
                     </Tippy>
                 </div>
                 <div className={cx("HeaderSystem__ItemChild")}>
-                    <span>WellCome, Admin :))</span>
+                    <span>Trang quản lý</span>
                 </div>
                 <div className={cx("HeaderSystem__ItemChild")}
-                // onClick={() => {
-                //     navigate('/')
-                // }}
+                onClick={() => {
+                    handleLogOut()
+                }}
                 >
                     <FontAwesomeIcon icon={faRightFromBracket} />
                 </div>

@@ -19,6 +19,7 @@ import { getAllUserBrands } from './component/axios/meThodPost';
 import MaterialSystem from './component/Page/System/MaterialSystem/MaterialSystem';
 import Order from './component/Page/System/OrderSystem/Order';
 import WaveHouseSystem from './component/Page/System/waveHouse/waveHouse';
+import KitchenSystem from './component/Page/System/KitchenSystem/KitchenSystem';
 function App() {
   const userRedux = useSelector(state => state.rootLoginReducer.user)
   const isPending = useSelector(state => state.rootLoginReducer.isPending)
@@ -52,6 +53,7 @@ function App() {
           <Route path='/System/Material-manage' element={<MaterialSystem />} />
           <Route path='/System/Order' element={<Order />} />
           <Route path='/System/WareHouse-manage' element={<WaveHouseSystem />} />
+          <Route path='/System/Kitchen-manage' element={<KitchenSystem />} />
         </Routes>
       }
 

@@ -28,6 +28,7 @@ function Login() {
             const response = await loginUser(bodyUser)
             console.log(response)
             if (response.status == 200) {
+                // console.log(response.data.data.role)
                 if (response.data.status == -1) {
                     toast.error(response.data.message, {
                         position: toast.POSITION.TOP_RIGHT
@@ -39,16 +40,31 @@ function Login() {
                     )
                     console.log(changeSatus)
                     if (changeSatus.data.message == "Bạn đang ngưng hoạt động") {
-                        const changeSatus = await changeStatusUser(response.data.data.employeeId)
-                        const actionSuccess = successLogin(response.data.data)
-                        dispatch(actionSuccess)
-                        navigate('/')
+                                const changeSatus = await changeStatusUser(response.data.data.employeeId)
+                                const actionSuccess = successLogin(response.data.data)
+                                dispatch(actionSuccess)
+                                if(response.data.data.role==process.env.REACT_APP_KEY_KITCHEN){
+                                navigate('/System/Kitchen-manage')
+                                }else{
+
+                                    navigate('/')
+                                }
+                        
+                        
                     }
                     if (changeSatus.data.message == "Bạn đang hoạt động") {
-                        const actionSuccess = successLogin(response.data.data)
-                        dispatch(actionSuccess)
-                        navigate('/')
+                       
+                                const actionSuccess = successLogin(response.data.data)
+                                dispatch(actionSuccess)
+                                if(response.data.data.role==process.env.REACT_APP_KEY_KITCHEN){
+                                    navigate('/System/Kitchen-manage')
+                                    }else{
+    
+                                        navigate('/')
+                                    }
+                           
                     }
+
                 }
             }
 

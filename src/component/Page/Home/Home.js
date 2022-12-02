@@ -22,7 +22,7 @@ function Home() {
     const [amoutOrder, setAmountOrder] = useState('')
     const [chartState, setCharState] = useState('')
     useEffect(() => {
-        handleTrendingFood(userRedux.employeeId, setCharState, setTurnoverOrder)
+        handleTrendingFood(userRedux?userRedux.employeeId:'', setCharState, setTurnoverOrder)
     }, [])
     console.log(chartState)
     console.log(turnoverOrder)
